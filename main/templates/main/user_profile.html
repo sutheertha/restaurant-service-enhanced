@@ -1,0 +1,45 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2 class="my-4">User Profile</h2>
+    
+    <h3>Personal Details</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Save changes</button>
+    </form>
+    
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <h3 class="mt-4">Order History</h3>
+    {% for order in orders %}
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Order {{ order.cart.id }}</h5>
+            <p class="card-text"><strong>Date:</strong> {{ order.cart.created_at }}</p>
+            <p class="card-text"><strong>Total:</strong> ${{ order.cart.total }}</p>
+            <h6>Items:</h6>
+            <ul>
+                {% for item in order.cart.cartitem_set.all %}
+                <li>{{ item.quantity }} x {{ item.menu_item.name }} - ${{ item.price }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% empty %}
+    <div class="card mb-4">
+        <div class="card-body">
+            <p>No orders found.</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

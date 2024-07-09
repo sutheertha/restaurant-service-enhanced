@@ -1,0 +1,31 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2 class="my-4">Order Summary</h2>
+    <div class="row">
+        {% for item in cart_items %}
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">{{ item.menu_item.name }}</h5>
+                    <p class="card-text">Quantity: {{ item.quantity }}</p>
+                    <p class="card-text">Price: ${{ item.price }}</p>
+                    <a href="{% url 'adjust_quantity' item.id 'increase' %}" class="btn btn-secondary">+</a>
+                    <a href="{% url 'adjust_quantity' item.id 'decrease' %}" class="btn btn-secondary">-</a>
+                    <a href="{% url 'remove_item' item.id %}" class="btn btn-danger">Remove</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-md-12">
+            <p>Your cart is empty.</p>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="text-right">
+        <h4>Total: ${{ cart.total }}</h4>
+        <a href="{% url 'confirm_order' %}" class="btn btn-success">Confirm Order</a>
+    </div>
+</div>
+{% endblock %}

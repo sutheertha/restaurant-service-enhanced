@@ -1,0 +1,14 @@
+def collatz(n):
+    if n%2==1:
+       return(3*n)+1
+    else:
+        return n//2
+num=int(input("enter a number:"))
+steps=1
+while num!=1:
+ num=collatz(num)
+ steps+=1
+print("the number of steps taken are",steps)
+
+
+
